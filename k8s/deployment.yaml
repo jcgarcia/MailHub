@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: mailhub-admin
-        image: ghcr.io/ingasti/mailhub-admin:latest
+        image: ghcr.io/jcgarcia/mailhub-admin:latest
         ports:
         - containerPort: 8080
         env:
