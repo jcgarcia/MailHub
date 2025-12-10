@@ -89,6 +89,8 @@ spec:
           secretName: mailhub-ssh-key
           defaultMode: 0400
           optional: true
+      imagePullSecrets:
+      - name: ghcr-credentials
 ---
 apiVersion: v1
 kind: Service
