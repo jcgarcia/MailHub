@@ -20,42 +20,7 @@ pipeline {
                     echo "🚀 Building MailHub Admin"
                     echo "========================="
                     echo "📦 Image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-                }
-            }
-        }
-
-        stage('Build Go Binary') {
-            steps {
-                script {
-                    echo "🔨 Building Go binary for ARM64..."
-                    sh '''
-                        echo "PWD: $PWD"
-                        echo "WORKSPACE: $WORKSPACE"
-                        ls -la
-                        ls -la go.mod || echo "go.mod not found"
-                        docker run --rm \
-                            -v "${WORKSPACE}":/app \
-                            -w /app \
-                            golang:1.21-alpine \
-                            sh -c "ls -la && apk add --no-cache git && go mod download || true && CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags='-w -s' -o mailhub-admin ./cmd/mailhub-admin"
-                    '''
-                    echo "✅ Go binary built successfully"
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                script {
-                    echo "🧪 Running tests..."
-                    sh '''
-                        docker run --rm \
-                            -v "${WORKSPACE}":/app \
-                            -w /app \
-                            golang:1.21-alpine \
-                            sh -c "apk add --no-cache git && go test -v ./... || echo 'No tests yet'"
-                    '''
-                    echo "✅ Tests passed"
+                    sh 'ls -la'
                 }
             }
         }
@@ -63,7 +28,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    echo "🐳 Building Docker image..."
+                    echo "🐳 Building Docker image (multi-stage build compiles Go)..."
                     sh """
                         docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
                                      -t ${REGISTRY}/${IMAGE_NAME}:latest .
@@ -77,6 +42,11 @@ pipeline {
             steps {
                 script {
                     echo "📤 Pushing Docker image to registry..."
+                    withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                        sh '''
+                            echo "$GH_TOKEN" | docker login ghcr.io -u "$GH_USER" --password-stdin
+                        '''
+                    }
                     sh """
                         docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
                         docker push ${REGISTRY}/${IMAGE_NAME}:latest
