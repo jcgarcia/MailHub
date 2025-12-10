@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        REGISTRY = 'ghcr.io/ingasti'
+        REGISTRY = 'ghcr.io/jcgarcia'
         IMAGE_NAME = 'mailhub-admin'
         BUILD_NUMBER_TAG = "${env.BUILD_NUMBER}"
     }
