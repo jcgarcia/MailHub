@@ -23,12 +23,13 @@ type Config struct {
 
 // SSHConfig holds SSH connection settings
 type SSHConfig struct {
-	Host     string
-	Port     int
-	User     string
-	KeyPath  string
-	JumpHost string
-	JumpUser string
+	Host        string
+	Port        int
+	User        string
+	KeyPath     string
+	JumpHost    string
+	JumpUser    string
+	JumpKeyPath string
 }
 
 // Load reads configuration from environment variables
@@ -41,12 +42,13 @@ func Load() *Config {
 		DatabasePath: getEnv("DATABASE_PATH", "/data/mailhub.db"),
 
 		SSH: SSHConfig{
-			Host:     getEnv("CMH_SSH_HOST", "cmh"),
-			Port:     sshPort,
-			User:     getEnv("CMH_SSH_USER", "root"),
-			KeyPath:  getEnv("CMH_SSH_KEY_PATH", "/secrets/ssh-key"),
-			JumpHost: getEnv("CMH_SSH_JUMP_HOST", "oraclejump"),
-			JumpUser: getEnv("CMH_SSH_JUMP_USER", "opc"),
+			Host:        getEnv("CMH_SSH_HOST", "localhost"),
+			Port:        sshPort,
+			User:        getEnv("CMH_SSH_USER", "postman"),
+			KeyPath:     getEnv("CMH_SSH_KEY_PATH", "/secrets/mailhub_key"),
+			JumpHost:    getEnv("CMH_SSH_JUMP_HOST", "jump.ingasti.com"),
+			JumpUser:    getEnv("CMH_SSH_JUMP_USER", "ubuntu"),
+			JumpKeyPath: getEnv("CMH_SSH_JUMP_KEY_PATH", "/secrets/jump_key"),
 		},
 
 		DevMode:      getEnv("DEV_MODE", "false") == "true",

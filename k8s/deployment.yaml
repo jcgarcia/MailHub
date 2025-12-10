@@ -46,19 +46,23 @@ spec:
         - name: DATABASE_PATH
           value: "/data/mailhub.db"
         - name: CMH_SSH_HOST
-          value: "cmh.ingasti.com"
+          value: "localhost"
+        - name: CMH_SSH_PORT
+          value: "2223"
         - name: CMH_SSH_USER
           value: "postman"
         - name: CMH_SSH_KEY_PATH
-          value: "/secrets/ssh-key"
+          value: "/secrets/mailhub_key"
         - name: CMH_SSH_JUMP_HOST
-          value: "oraclejump"
+          value: "jump.ingasti.com"
         - name: CMH_SSH_JUMP_USER
-          value: "opc"
+          value: "ubuntu"
+        - name: CMH_SSH_JUMP_KEY_PATH
+          value: "/secrets/jump_key"
         volumeMounts:
         - name: data
           mountPath: /data
-        - name: ssh-key
+        - name: ssh-keys
           mountPath: /secrets
           readOnly: true
         resources:
@@ -84,11 +88,10 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: mailhub-data
-      - name: ssh-key
+      - name: ssh-keys
         secret:
-          secretName: mailhub-ssh-key
+          secretName: mailhub-ssh-keys
           defaultMode: 0400
-          optional: true
       imagePullSecrets:
       - name: ghcr-credentials
 ---
