@@ -46,9 +46,9 @@ spec:
         - name: DATABASE_PATH
           value: "/data/mailhub.db"
         - name: CMH_SSH_HOST
-          value: "cmh"
+          value: "cmh.ingasti.com"
         - name: CMH_SSH_USER
-          value: "root"
+          value: "postman"
         - name: CMH_SSH_KEY_PATH
           value: "/secrets/ssh-key"
         - name: CMH_SSH_JUMP_HOST
@@ -88,6 +88,7 @@ spec:
         secret:
           secretName: mailhub-ssh-key
           defaultMode: 0400
+          optional: true
 ---
 apiVersion: v1
 kind: Service
