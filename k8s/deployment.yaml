@@ -91,7 +91,7 @@ spec:
       - name: ssh-keys
         secret:
           secretName: mailhub-ssh-keys
-          defaultMode: 0400
+          defaultMode: 0444
       imagePullSecrets:
       - name: ghcr-credentials
 ---
