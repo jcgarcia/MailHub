@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mailhub
+  labels:
+    app.kubernetes.io/name: mailhub
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mailhub-data
+  namespace: mailhub
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: local-path
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailhub-admin
+  namespace: mailhub
+  labels:
+    app: mailhub-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailhub-admin
+  template:
+    metadata:
+      labels:
+        app: mailhub-admin
+    spec:
+      containers:
+      - name: mailhub-admin
+        image: ghcr.io/ingasti/mailhub-admin:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PORT
+          value: "8080"
+        - name: DATABASE_PATH
+          value: "/data/mailhub.db"
+        - name: CMH_SSH_HOST
+          value: "cmh"
+        - name: CMH_SSH_USER
+          value: "root"
+        - name: CMH_SSH_KEY_PATH
+          value: "/secrets/ssh-key"
+        - name: CMH_SSH_JUMP_HOST
+          value: "oraclejump"
+        - name: CMH_SSH_JUMP_USER
+          value: "opc"
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: ssh-key
+          mountPath: /secrets
+          readOnly: true
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "10m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mailhub-data
+      - name: ssh-key
+        secret:
+          secretName: mailhub-ssh-key
+          defaultMode: 0400
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailhub-admin
+  namespace: mailhub
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30082
+  selector:
+    app: mailhub-admin

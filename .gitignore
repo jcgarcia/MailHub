@@ -1,0 +1,42 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Logs
+*.log
+
+# Go binaries
+mailhub-admin
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+go.work.sum
+
+# Local data
+/data/
+*.db
+
+# Secrets (never commit)
+*.pem
+*.key
+secrets/
+
+# Build artifacts
+dist/
+dist/
+.env*
