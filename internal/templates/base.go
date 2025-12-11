@@ -36,8 +36,8 @@ body {
     margin-bottom: 25px;
 }
 .header .logo {
-    width: 80px;
-    height: 80px;
+    width: 160px;
+    height: 160px;
     margin-bottom: 15px;
     border-radius: 16px;
 }
