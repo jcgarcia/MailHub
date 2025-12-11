@@ -247,9 +247,54 @@ tr:hover {
     background: #dcfce7;
     color: #16a34a;
 }
+.badge-danger {
+    background: #fee2e2;
+    color: #dc2626;
+}
 .actions {
     display: flex;
     gap: 8px;
+}
+
+/* Mail Config Card */
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+.config-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+}
+.config-section h3 {
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+.config-section h3 i {
+    margin-right: 8px;
+    color: #1a73e8;
+}
+.config-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent;
+    box-shadow: none;
+}
+.config-table td {
+    padding: 8px 0;
+    border: none;
+    font-size: 0.9rem;
+}
+.config-table td:first-child {
+    color: #666;
+    width: 100px;
+}
+.config-table strong {
+    color: #333;
 }
 
 /* Mobile Responsive */

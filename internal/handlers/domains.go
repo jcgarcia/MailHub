@@ -147,14 +147,21 @@ func CreateDomain(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user := r.Header.Get("X-Auth-User")
+	if user == "" {
+		user = "system"
+	}
+
 	if err := h.Mail.AddDomain(domain); err != nil {
 		log.Printf("Error adding domain %s: %v", domain, err)
+		LogAudit(user, "add_domain", domain, "failed", err.Error())
 		w.Header().Set("Content-Type", "text/html")
 		w.Write([]byte(fmt.Sprintf(`<div class="error-msg"><i class="la la-exclamation-circle"></i> Error: %s</div>`, html.EscapeString(err.Error()))))
 		return
 	}
 
 	log.Printf("Domain added: %s", domain)
+	LogAudit(user, "add_domain", domain, "success", "")
 
 	// Return updated list
 	ListDomainsPartial(w, r)
@@ -173,14 +180,21 @@ func DeleteDomain(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user := r.Header.Get("X-Auth-User")
+	if user == "" {
+		user = "system"
+	}
+
 	if err := h.Mail.DeleteDomain(domain); err != nil {
 		log.Printf("Error deleting domain %s: %v", domain, err)
+		LogAudit(user, "delete_domain", domain, "failed", err.Error())
 		w.Header().Set("Content-Type", "text/html")
 		w.Write([]byte(fmt.Sprintf(`<div class="error-msg"><i class="la la-exclamation-circle"></i> Error: %s</div>`, html.EscapeString(err.Error()))))
 		return
 	}
 
 	log.Printf("Domain deleted: %s", domain)
+	LogAudit(user, "delete_domain", domain, "success", "")
 
 	// Return updated list
 	ListDomainsPartial(w, r)

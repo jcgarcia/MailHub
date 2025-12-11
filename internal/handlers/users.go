@@ -166,14 +166,22 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	authUser := r.Header.Get("X-Auth-User")
+	if authUser == "" {
+		authUser = "system"
+	}
+
+	email := username + "@" + domain
 	if err := h.Mail.AddMailbox(domain, username, password); err != nil {
 		log.Printf("Error adding user %s@%s: %v", username, domain, err)
+		LogAudit(authUser, "add_user", email, "failed", err.Error())
 		w.Header().Set("Content-Type", "text/html")
 		w.Write([]byte(fmt.Sprintf(`<div class="error-msg"><i class="la la-exclamation-circle"></i> Error: %s</div>`, html.EscapeString(err.Error()))))
 		return
 	}
 
 	log.Printf("User added: %s@%s", username, domain)
+	LogAudit(authUser, "add_user", email, "success", "")
 
 	// Return updated list
 	ListUsersPartial(w, r)
@@ -224,14 +232,22 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	authUser := r.Header.Get("X-Auth-User")
+	if authUser == "" {
+		authUser = "system"
+	}
+
+	email := user + "@" + domain
 	if err := h.Mail.ChangePassword(domain, user, password); err != nil {
 		log.Printf("Error changing password for %s@%s: %v", user, domain, err)
+		LogAudit(authUser, "change_password", email, "failed", err.Error())
 		w.Header().Set("Content-Type", "text/html")
 		w.Write([]byte(fmt.Sprintf(`<div class="error-msg"><i class="la la-exclamation-circle"></i> Error: %s</div>`, html.EscapeString(err.Error()))))
 		return
 	}
 
 	log.Printf("Password changed for: %s@%s", user, domain)
+	LogAudit(authUser, "change_password", email, "success", "")
 
 	// Return updated list
 	ListUsersPartial(w, r)
@@ -252,14 +268,22 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	authUser := r.Header.Get("X-Auth-User")
+	if authUser == "" {
+		authUser = "system"
+	}
+
+	email := user + "@" + domain
 	if err := h.Mail.DeleteMailbox(domain, user); err != nil {
 		log.Printf("Error deleting user %s@%s: %v", user, domain, err)
+		LogAudit(authUser, "delete_user", email, "failed", err.Error())
 		w.Header().Set("Content-Type", "text/html")
 		w.Write([]byte(fmt.Sprintf(`<div class="error-msg"><i class="la la-exclamation-circle"></i> Error: %s</div>`, html.EscapeString(err.Error()))))
 		return
 	}
 
 	log.Printf("User deleted: %s@%s", user, domain)
+	LogAudit(authUser, "delete_user", email, "success", "")
 
 	// Return updated list
 	ListUsersPartial(w, r)
