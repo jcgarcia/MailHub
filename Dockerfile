@@ -32,7 +32,10 @@ RUN adduser -D -u 1000 appuser
 COPY --from=builder /app/mailhub-admin /usr/local/bin/
 
 # Copy web assets
-COPY --from=builder /app/web /web
+COPY --from=builder /app/web /app/web
+
+# Set working directory for web assets
+WORKDIR /app
 
 # Create data directory
 RUN mkdir -p /data && chown appuser:appuser /data

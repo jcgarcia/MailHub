@@ -36,9 +36,10 @@ body {
     margin-bottom: 25px;
 }
 .header .logo {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 10px;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+    border-radius: 16px;
 }
 .header h1 {
     color: #1a73e8;
@@ -250,6 +251,68 @@ tr:hover {
     display: flex;
     gap: 8px;
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    .card {
+        padding: 20px;
+        border-radius: 12px;
+    }
+    .header h1 {
+        font-size: 1.3rem;
+    }
+    .btn {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+    }
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    th, td {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    .modal {
+        margin: 15px;
+        padding: 20px;
+        max-width: calc(100% - 30px);
+    }
+    .modal-footer {
+        flex-direction: column;
+    }
+    .modal-footer .btn {
+        width: 100%;
+    }
+    .actions {
+        flex-direction: column;
+        gap: 6px;
+    }
+    .actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .header .logo {
+        width: 60px;
+        height: 60px;
+    }
+    .header h1 {
+        font-size: 1.1rem;
+    }
+    th, td {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+    .badge {
+        font-size: 0.75rem;
+        padding: 3px 8px;
+    }
+}
 `
 
 // BaseHead returns the common HTML head section
@@ -272,13 +335,9 @@ func BaseFooter() string {
 	return `</body></html>`
 }
 
-// Logo returns the SVG logo
+// Logo returns the logo image
 func Logo() string {
-	return `<svg class="logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="45" fill="#1a73e8"/>
-    <path d="M25 35 L50 55 L75 35 L75 70 L25 70 Z" fill="white"/>
-    <path d="M25 35 L50 55 L75 35" stroke="white" stroke-width="3" fill="none"/>
-</svg>`
+	return `<img src="/static/logo.png" alt="Central Mail Hub" class="logo">`
 }
 
 // RenderPage renders a full page with the base template
