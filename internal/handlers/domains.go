@@ -34,6 +34,40 @@ func ListDomains(w http.ResponseWriter, r *http.Request) {
         </div>
     </div>
     <div id="modal"></div>
+</div>
+
+<div class="card">
+    <h2 style="color: #1a73e8; margin-bottom: 20px; font-size: 1.2rem;">
+        <i class="la la-dns" style="margin-right: 8px;"></i>DNS Configuration for New Domains
+    </h2>
+    <p style="color: #666; margin-bottom: 20px;">After adding a domain, configure these DNS records at your domain registrar:</p>
+    
+    <div class="config-section" style="margin-bottom: 20px;">
+        <h3><i class="la la-exchange-alt"></i> MX Record (Required)</h3>
+        <table class="config-table">
+            <tr><td>Type:</td><td><strong>MX</strong></td></tr>
+            <tr><td>Host:</td><td><strong>@</strong> (or yourdomain.com)</td></tr>
+            <tr><td>Value:</td><td><strong>cmh.ingasti.com</strong></td></tr>
+            <tr><td>Priority:</td><td><strong>10</strong></td></tr>
+            <tr><td>TTL:</td><td>3600 (or default)</td></tr>
+        </table>
+    </div>
+    
+    <div class="config-section" style="margin-bottom: 20px;">
+        <h3><i class="la la-shield-alt"></i> SPF Record (Recommended)</h3>
+        <table class="config-table">
+            <tr><td>Type:</td><td><strong>TXT</strong></td></tr>
+            <tr><td>Host:</td><td><strong>@</strong> (or yourdomain.com)</td></tr>
+            <tr><td>Value:</td><td><strong>v=spf1 mx a:cmh.ingasti.com ~all</strong></td></tr>
+        </table>
+    </div>
+    
+    <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+        <p style="margin: 0; color: #856404; font-size: 0.9rem;">
+            <i class="la la-clock" style="margin-right: 6px;"></i>
+            <strong>Note:</strong> DNS changes may take up to 24-48 hours to propagate worldwide.
+        </p>
+    </div>
 </div>`
 
 	templates.RenderPage(w, "Domains", content)

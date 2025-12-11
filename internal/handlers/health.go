@@ -50,7 +50,7 @@ func Dashboard(w http.ResponseWriter, r *http.Request) {
         <div class="config-section">
             <h3><i class="la la-envelope"></i> Incoming Mail (IMAP)</h3>
             <table class="config-table">
-                <tr><td>Server:</td><td><strong>mail.ingasti.com</strong></td></tr>
+                <tr><td>Server:</td><td><strong>cmh.ingasti.com</strong></td></tr>
                 <tr><td>Port:</td><td><strong>993</strong> (SSL/TLS)</td></tr>
                 <tr><td>Security:</td><td>SSL/TLS</td></tr>
                 <tr><td>Username:</td><td>Your full email address</td></tr>
@@ -60,7 +60,7 @@ func Dashboard(w http.ResponseWriter, r *http.Request) {
         <div class="config-section">
             <h3><i class="la la-paper-plane"></i> Outgoing Mail (SMTP)</h3>
             <table class="config-table">
-                <tr><td>Server:</td><td><strong>mail.ingasti.com</strong></td></tr>
+                <tr><td>Server:</td><td><strong>cmh.ingasti.com</strong></td></tr>
                 <tr><td>Port:</td><td><strong>587</strong> (STARTTLS)</td></tr>
                 <tr><td>Security:</td><td>STARTTLS</td></tr>
                 <tr><td>Username:</td><td>Your full email address</td></tr>
