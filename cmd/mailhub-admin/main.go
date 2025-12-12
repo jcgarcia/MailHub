@@ -58,9 +58,6 @@ r.Use(middleware.Auth(cfg))
 // Dashboard
 r.Get("/", handlers.Dashboard)
 
-// Rspamd antispam dashboard page
-r.Get("/rspamd", handlers.HandleRspamdDashboard)
-
 // Domain management
 r.Route("/domains", func(r chi.Router) {
 r.Get("/", handlers.ListDomains)
@@ -84,23 +81,6 @@ r.Delete("/{user}", handlers.DeleteUser)
 // Audit log
 r.Get("/audit", handlers.AuditLog)
 r.Get("/audit/entries", handlers.AuditEntriesPartial)
-
-// Rspamd antispam management
-r.Route("/rspamd", func(r chi.Router) {
-r.Get("/status", handlers.HandleRspamdStatus)
-r.Get("/metrics", handlers.HandleRspamdMetrics)
-r.Get("/config", handlers.HandleRspamdConfig)
-r.Put("/config", handlers.HandleRspamdConfigUpdate)
-r.Post("/config", handlers.HandleRspamdConfigUpdate)
-r.Get("/whitelist", handlers.HandleRspamdWhitelist)
-r.Post("/whitelist", handlers.HandleRspamdWhitelistAdd)
-r.Delete("/whitelist", handlers.HandleRspamdWhitelistRemove)
-r.Get("/logs", handlers.HandleRspamdLogs)
-r.Post("/service/start", handlers.HandleRspamdServiceStart)
-r.Post("/service/stop", handlers.HandleRspamdServiceStop)
-r.Post("/service/restart", handlers.HandleRspamdServiceRestart)
-r.Get("/export", handlers.HandleRspamdExport)
-})
 })
 
 // Static files

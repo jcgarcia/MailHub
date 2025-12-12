@@ -29,11 +29,6 @@ func NewMailService(sshClient *SSHClient) *MailService {
 	return &MailService{ssh: sshClient}
 }
 
-// GetSSHClient returns the underlying SSH client
-func (m *MailService) GetSSHClient() *SSHClient {
-	return m.ssh
-}
-
 // Mail configuration file paths on CMH
 const (
 	virtualDomainsFile  = "/etc/postfix/virtual_domains"
