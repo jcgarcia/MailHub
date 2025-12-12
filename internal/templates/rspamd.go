@@ -24,22 +24,6 @@ const RspamdDashboardHTML = `
             max-width: 1200px;
             margin: 0 auto;
         }
-        .header {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
-        }
-        .header h1 {
-            color: #1a73e8;
-            font-size: 2rem;
-            margin-bottom: 5px;
-        }
-        .header p {
-            color: #666;
-            font-size: 0.95rem;
-        }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -202,13 +186,58 @@ const RspamdDashboardHTML = `
             color: #c62828;
             border-left: 4px solid #c62828;
         }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-title h1 {
+            color: #1a73e8;
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .header-title p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .btn-nav {
+            padding: 10px 20px;
+            background: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-nav:hover {
+            background: #1557b0;
+        }
+        .btn-nav.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .btn-nav.secondary:hover {
+            background: #e0e0e0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>⚙️ Rspamd Dashboard</h1>
-            <p>Antispam and Antivirus Management</p>
+            <div class="header-title">
+                <h1>⚙️ Rspamd Dashboard</h1>
+                <p>Antispam and Antivirus Management</p>
+            </div>
+            <div class="nav-buttons">
+                <a href="/" class="btn-nav secondary">← Back to Home</a>
+            </div>
         </div>
 
         <!-- Status Card -->
