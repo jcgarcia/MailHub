@@ -82,7 +82,7 @@ func NewRspamdService(sshClient *SSHClient) *RspamdService {
 func (r *RspamdService) GetStatus() (*RspamdStatus, error) {
 	// Check if Rspamd is running
 	cmd := "doas rc-service rspamd status && echo 'RUNNING' || echo 'STOPPED'"
-	output, err := r.ssh.ExecuteCommand(cmd)
+	output, err := r.ssh.Execute(cmd)
 	if err != nil {
 		return nil, fmt.Errorf("failed to check Rspamd status: %w", err)
 	}
@@ -97,12 +97,12 @@ func (r *RspamdService) GetStatus() (*RspamdStatus, error) {
 
 	// Get version
 	versionCmd := "rspamd --version | head -1"
-	versionOut, _ := r.ssh.ExecuteCommand(versionCmd)
+	versionOut, _ := r.ssh.Execute(versionCmd)
 	status.Version = strings.TrimSpace(versionOut)
 
 	// Get process info
 	psCmd := "doas ps aux | grep '[r]spawmd' | head -1 | awk '{print $2, $6}'"
-	psOut, _ := r.ssh.ExecuteCommand(psCmd)
+	psOut, _ := r.ssh.Execute(psCmd)
 	if psOut != "" {
 		parts := strings.Fields(psOut)
 		if len(parts) >= 2 {
@@ -113,7 +113,7 @@ func (r *RspamdService) GetStatus() (*RspamdStatus, error) {
 
 	// Get CPU usage from top
 	topCmd := "doas top -bn 1 | grep -E '^[%]|rspamd' | tail -1 | awk '{print $9}'"
-	topOut, _ := r.ssh.ExecuteCommand(topCmd)
+	topOut, _ := r.ssh.Execute(topCmd)
 	status.CPU = strings.TrimSpace(topOut) + "%"
 
 	return status, nil
@@ -123,7 +123,7 @@ func (r *RspamdService) GetStatus() (*RspamdStatus, error) {
 func (r *RspamdService) GetMetrics() (*RspamdMetrics, error) {
 	// Try to get metrics from Rspamd HTTP interface
 	cmd := `doas wget -q -O - http://127.0.0.1:11334/stat | grep -E '"(scanned|spam|ham|score)"|Total:' | head -20`
-	output, err := r.ssh.ExecuteCommand(cmd)
+	output, err := r.ssh.Execute(cmd)
 	if err != nil {
 		// Fallback: parse from logs
 		return r.getMetricsFromLogs()
@@ -160,7 +160,7 @@ func (r *RspamdService) getMetricsFromLogs() (*RspamdMetrics, error) {
 
 	// Get last 1000 log lines
 	cmd := fmt.Sprintf("doas tail -1000 %s", rspamdLogFile)
-	output, err := r.ssh.ExecuteCommand(cmd)
+	output, err := r.ssh.Execute(cmd)
 	if err != nil {
 		return metrics, fmt.Errorf("failed to read Rspamd logs: %w", err)
 	}
@@ -281,7 +281,7 @@ worker "normal" {
 
 	// Reload Rspamd
 	cmd := "doas rc-service rspamd reload"
-	if _, err := r.ssh.ExecuteCommand(cmd); err != nil {
+	if _, err := r.ssh.Execute(cmd); err != nil {
 		return fmt.Errorf("failed to reload Rspamd: %w", err)
 	}
 
@@ -351,7 +351,7 @@ func (r *RspamdService) AddToWhitelist(entry string) error {
 
 	// Append to whitelist file
 	cmd := fmt.Sprintf("echo '%s' | doas tee -a %s", entry, rspamdWhitelistTxt)
-	if _, err := r.ssh.ExecuteCommand(cmd); err != nil {
+	if _, err := r.ssh.Execute(cmd); err != nil {
 		return fmt.Errorf("failed to add to whitelist: %w", err)
 	}
 
@@ -366,7 +366,7 @@ func (r *RspamdService) RemoveFromWhitelist(entry string) error {
 
 	// Use sed to remove the entry
 	cmd := fmt.Sprintf("doas sed -i '/%s/d' %s", entry, rspamdWhitelistTxt)
-	if _, err := r.ssh.ExecuteCommand(cmd); err != nil {
+	if _, err := r.ssh.Execute(cmd); err != nil {
 		return fmt.Errorf("failed to remove from whitelist: %w", err)
 	}
 
@@ -380,7 +380,7 @@ func (r *RspamdService) GetLogs(lines int) ([]RspamdLog, error) {
 	}
 
 	cmd := fmt.Sprintf("doas tail -%d %s", lines, rspamdLogFile)
-	output, err := r.ssh.ExecuteCommand(cmd)
+	output, err := r.ssh.Execute(cmd)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read logs: %w", err)
 	}
@@ -419,7 +419,7 @@ func (r *RspamdService) GetLogs(lines int) ([]RspamdLog, error) {
 // TestConnection tests the Rspamd connection
 func (r *RspamdService) TestConnection() error {
 	cmd := "doas rc-service rspamd status | grep -q 'started'"
-	_, err := r.ssh.ExecuteCommand(cmd)
+	_, err := r.ssh.Execute(cmd)
 	return err
 }
 
@@ -444,7 +444,7 @@ func isValidIP(ip string) bool {
 // RestartService restarts the Rspamd service
 func (r *RspamdService) RestartService() error {
 	cmd := "doas rc-service rspamd restart"
-	_, err := r.ssh.ExecuteCommand(cmd)
+	_, err := r.ssh.Execute(cmd)
 	if err != nil {
 		return fmt.Errorf("failed to restart Rspamd: %w", err)
 	}
@@ -454,7 +454,7 @@ func (r *RspamdService) RestartService() error {
 // StopService stops the Rspamd service
 func (r *RspamdService) StopService() error {
 	cmd := "doas rc-service rspamd stop"
-	_, err := r.ssh.ExecuteCommand(cmd)
+	_, err := r.ssh.Execute(cmd)
 	if err != nil {
 		return fmt.Errorf("failed to stop Rspamd: %w", err)
 	}
@@ -464,7 +464,7 @@ func (r *RspamdService) StopService() error {
 // StartService starts the Rspamd service
 func (r *RspamdService) StartService() error {
 	cmd := "doas rc-service rspamd start"
-	_, err := r.ssh.ExecuteCommand(cmd)
+	_, err := r.ssh.Execute(cmd)
 	if err != nil {
 		return fmt.Errorf("failed to start Rspamd: %w", err)
 	}
