@@ -33,6 +33,10 @@ func Dashboard(w http.ResponseWriter, r *http.Request) {
             <i class="la la-globe"></i>
             <span>Domains</span>
         </a>
+        <a href="/rspamd" class="menu-item">
+            <i class="la la-shield"></i>
+            <span>Rspamd Protection</span>
+        </a>
         <a href="/audit" class="menu-item">
             <i class="la la-history"></i>
             <span>Audit Log</span>
