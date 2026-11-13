@@ -39,6 +39,36 @@ Mail server configuration is managed via:
 
 *Note: Replace `yourdomain.com` with your actual domain and configure SSH jump host settings in your environment variables or configuration files.*
 
+## Configuration
+
+**⚠️ IMPORTANT: MailHub Admin requires SSH configuration to connect to your mail server.** All settings are provided through **environment variables**.
+
+**You MUST configure these before running:**
+- Mail server SSH host, port, and credentials
+- SSH jump host (if your mail server is in a private network)
+- Application port and database location
+
+See **[CONFIGURATION.md](CONFIGURATION.md)** for detailed setup instructions including:
+- Environment variable reference
+- SSH architecture (direct vs. jump host)
+- Example configurations for Docker, Kubernetes, and cloud providers
+- Troubleshooting guide
+
+### Quick Start
+
+```bash
+# Set required environment variables (customize for your setup)
+export CMH_SSH_HOST=192.168.1.100          # Your mail server IP/hostname
+export CMH_SSH_USER=postman                # SSH user on mail server
+export CMH_SSH_KEY_PATH=/path/to/ssh/key   # Path to SSH private key
+export CMH_SSH_JUMP_HOST=jump.yourdomain.com  # Bastion/jump host (if needed)
+
+# Run development server
+go run ./cmd/mailhub-admin
+```
+
+For full configuration details, see **[CONFIGURATION.md](CONFIGURATION.md)**
+
 ## Development
 
 ### Prerequisites
