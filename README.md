@@ -29,13 +29,15 @@ MailHub Admin provides a simple web interface to manage:
 
 The application connects to the CMH mail server via SSH through a jump host:
 ```
-K8s Pod → jump.ingasti.com:22 → localhost:2223 → CMH:22
+K8s Pod → jump.yourdomain.com:22 → localhost:2223 → CMH:22
 ```
 
 Mail server configuration is managed via:
 - `/etc/postfix/virtual_domains` - Domain list
 - `/etc/postfix/virtual_mailbox` - Mailbox mappings
 - `/etc/dovecot/users` - User authentication
+
+*Note: Replace `yourdomain.com` with your actual domain and configure SSH jump host settings in your environment variables or configuration files.*
 
 ## Development
 
@@ -66,10 +68,12 @@ docker build -t mailhub-admin .
 
 ## Deployment
 
-Deployed via Jenkins CI/CD to K8s on oracledev:
-- Registry: `ghcr.io/jcgarcia/mailhub-admin`
+Deployed via Jenkins CI/CD to Kubernetes:
+- Registry: `ghcr.io/jcgarcia/mailhub-admin` (replace with your registry)
 - Namespace: `mailhub`
-- URL: https://mailhub.ingasti.com
+- URL: Configure your domain in the Kubernetes ingress (e.g., `https://mailhub.yourdomain.com`)
+
+*Note: See `k8s/deployment.yaml` for configuration templates and environment-specific customizations.*
 
 ## Project Structure
 
