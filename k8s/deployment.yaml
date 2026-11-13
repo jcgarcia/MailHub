@@ -54,7 +54,7 @@ spec:
         - name: CMH_SSH_KEY_PATH
           value: "/secrets/mailhub_key"
         - name: CMH_SSH_JUMP_HOST
-          value: "jump.ingasti.com"
+          value: "jump.yourdomain.com"
         - name: CMH_SSH_JUMP_USER
           value: "ubuntu"
         - name: CMH_SSH_JUMP_KEY_PATH

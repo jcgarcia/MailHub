@@ -23,7 +23,7 @@ MailHub Admin provides a simple web interface to manage:
 - **Frontend**: HTMX (server-side rendering, no JavaScript frameworks)
 - **Database**: SQLite (audit logs)
 - **Auth**: Caddy AuthCrunch SSO (X-Auth-User/X-Auth-Name headers)
-- **Deployment**: Kubernetes on OracleCloud
+- **Deployment**: Kubernetes (on your preferred cloud provider or on-premises)
 
 ## Architecture
 

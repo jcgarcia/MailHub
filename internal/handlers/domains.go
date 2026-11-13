@@ -47,7 +47,7 @@ func ListDomains(w http.ResponseWriter, r *http.Request) {
         <table class="config-table">
             <tr><td>Type:</td><td><strong>MX</strong></td></tr>
             <tr><td>Host:</td><td><strong>@</strong> (or yourdomain.com)</td></tr>
-            <tr><td>Value:</td><td><strong>cmh.ingasti.com</strong></td></tr>
+            <tr><td>Value:</td><td><strong>mail.yourdomain.com</strong></td></tr>
             <tr><td>Priority:</td><td><strong>10</strong></td></tr>
             <tr><td>TTL:</td><td>3600 (or default)</td></tr>
         </table>
@@ -58,7 +58,7 @@ func ListDomains(w http.ResponseWriter, r *http.Request) {
         <table class="config-table">
             <tr><td>Type:</td><td><strong>TXT</strong></td></tr>
             <tr><td>Host:</td><td><strong>@</strong> (or yourdomain.com)</td></tr>
-            <tr><td>Value:</td><td><strong>v=spf1 mx a:cmh.ingasti.com ~all</strong></td></tr>
+            <tr><td>Value:</td><td><strong>v=spf1 mx a:mail.yourdomain.com ~all</strong></td></tr>
         </table>
     </div>
     

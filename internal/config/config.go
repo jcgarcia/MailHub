@@ -46,7 +46,7 @@ func Load() *Config {
 			Port:        sshPort,
 			User:        getEnv("CMH_SSH_USER", "postman"),
 			KeyPath:     getEnv("CMH_SSH_KEY_PATH", "/secrets/mailhub_key"),
-			JumpHost:    getEnv("CMH_SSH_JUMP_HOST", "jump.ingasti.com"),
+			JumpHost:    getEnv("CMH_SSH_JUMP_HOST", "jump.yourdomain.com"),
 			JumpUser:    getEnv("CMH_SSH_JUMP_USER", "ubuntu"),
 			JumpKeyPath: getEnv("CMH_SSH_JUMP_KEY_PATH", "/secrets/jump_key"),
 		},
